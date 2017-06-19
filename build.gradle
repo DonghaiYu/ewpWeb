@@ -1,24 +1,42 @@
 group 'com.dylan'
 version '1.0-SNAPSHOT'
 
+buildscript {
+    repositories { jcenter() }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.3.RELEASE")
+    }
+}
+
 apply plugin: 'java'
-apply plugin: 'idea'
+apply plugin: 'spring-boot'
 apply plugin: 'war'
+apply plugin: 'idea'
+
+//打jar 名称和版本
+
+jar {
+    baseName = 'awpWeb'
+    version = '0.0.1-SNAPSHOT'
+}
+
+//在打jar的时候必须把webapp目录下的文件拷贝到META-INF/resources下
+jar.into('META-INF/resources') {
+    from('src/main/webapp')
+}
+
+
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     maven{ url 'http://maven.aliyun.com/nexus/content/groups/public/'}
 }
 
-jar {
-    baseName = 'ewpWeb-gradle'
-    version = '0.1.0'
-}
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
 
 dependencies {
-    compile("org.springframework.boot:spring-boot-starter-web:1.5.4.RELEASE")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    testCompile("org.springframework.boot:spring-boot-starter-test")
 }
 
 task copyJars(type: Copy) {
